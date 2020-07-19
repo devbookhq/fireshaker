@@ -5,5 +5,8 @@ fireshaker-*win.exe
 firestarter-*linux
 firestarter-*macos
 firestarter-*win.exe
+index-*linux
+index-*macos
+index-*win.exe
 cloud-funcs-example
 todesktop-web-app-master
