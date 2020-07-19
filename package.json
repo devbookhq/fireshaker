@@ -6,7 +6,8 @@
   "bin": "dist/index.js",
   "scripts": {
     "start": "node src/index.js",
-    "build": "ncc build src/index.js && pkg dist/index.js"
+    "build:prod": "ncc build src/deploy.js && pkg dist/index.js --target node10-macos-x64 --output foundrycf",
+    "build": "pkg src/deploy.js --target node10-macos-x64 --output foundrycf-dev"
   },
   "author": "",
   "license": "ISC",
@@ -15,11 +16,9 @@
     "depcheck": "^1.0.0",
     "dependency-cruiser": "^9.9.2",
     "fs-extra": "^9.0.1",
-    "inquirer": "^7.3.2",
-    "ncc": "^0.3.6",
-    "parcel": "^2.0.0-beta.1",
     "shelljs": "^0.8.4",
-    "ts-morph": "^7.1.2"
+    "ts-morph": "^7.1.2",
+    "typescript": "^3.9.7"
   },
   "devDependencies": {
     "pkg": "^4.4.9"
