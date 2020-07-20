@@ -10,5 +10,20 @@ function saveJSON(path, data) {
   fs.writeJSONSync(path, data);
 }
 
+function isEmpty(obj) {
+  for (var prop in obj) {
+    if (obj.hasOwnProperty(prop)) {
+      return false;
+    }
+  }
+  return JSON.stringify(obj) === JSON.stringify({});
+}
+
+function objClone(obj) {
+  return JSON.parse(JSON.stringify(obj));
+}
+
+exports.isEmpty = isEmpty;
+exports.objClone = objClone;
 exports.saveJSON = saveJSON;
 exports.loadJSON = loadJSON;

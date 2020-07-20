@@ -7,13 +7,14 @@ const depcheck = require('depcheck');
 
 const { getTriggers } = require('./triggers');
 const { loadJSON, saveJSON } = require('./utility');
+const { Console } = require('console');
 
 
 function installModules(functionsDir) {
   sh.cp(path.resolve(functionsDir, 'package.json'), path.resolve(functionsDir, 'package-archive.json'));
   try {
-    const { stdout, stderr, exitCode } = sh.exec(`cd ${functionsDir} && npm --depth 9999 up --dev`);
-    // const { stdout, stderr, exitCode } = sh.exec(`cd ${functionsDir} && npm i`);
+    // const { stdout, stderr, exitCode } = sh.exec(`cd ${functionsDir} && npm --depth 9999 up --dev`);
+    const { stdout, stderr, exitCode } = sh.exec(`cd ${functionsDir} && npm i`);
     console.log(stdout);
     console.error(stderr);
     // if (exitCode !== 0) {
@@ -37,28 +38,33 @@ function buildProject(functionsDir) {
 }
 
 function createSubproject(rootDir, functionsDir, entryPoint) {
-  const subprojectRootDir = path.resolve(rootDir, 'foundry-subprojects', `${entryPoint}-subproject`);
+  const subprojectRootDir = path.resolve(rootDir, '.foundry', `${entryPoint}-subproject`);
   const subprojectFunctionsDir = path.resolve(subprojectRootDir, 'functions');
 
-  const movedSubprojectRootDir = path.resolve(functionsDir, 'foundry-subprojects', `${entryPoint}-subproject`);
+  const movedSubprojectRootDir = path.resolve(functionsDir, '.foundry', `${entryPoint}-subproject`);
   const movedSubprojectFunctionsDir = path.resolve(movedSubprojectRootDir, 'functions');
 
   sh.mkdir('-p', subprojectFunctionsDir);
-  fs.copySync(functionsDir, subprojectFunctionsDir, {
-    preserveTimestamps: true,
-    overwrite: true,
-    recursive: true,
-    filter: (src, dest) => {
-      if (src.startsWith(subprojectRootDir)) {
-        return false;
-      }
-      if (src.startsWith(path.resolve(functionsDir, 'node_modules'))) {
-        return false;
-      }
-      return true;
-    },
+  // fs.copySync(functionsDir, subprojectFunctionsDir, {
+  //   preserveTimestamps: true,
+  //   overwrite: true,
+  //   recursive: true,
+  //   filter: (src, dest) => {
+  //     // if (src.startsWith(subprojectRootDir)) {
+  //     //   return false;
+  //     // }
+  //     if (src.startsWith(path.resolve(functionsDir, 'node_modules'))) {
+  //       return false;
+  //     }
+  //     return true;
+  //   },
+  // });
 
-  });
+  // console.log('functionsDir', functionsDir);
+  // console.log('subprojectFunctionsDir', subprojectFunctionsDir);
+
+  sh.exec(`rsync -a --exclude 'node_modules' ${functionsDir}/ ${subprojectFunctionsDir}/`);
+
   const firebasercSource = path.resolve(rootDir, '.firebaserc');
   const firebasercTarget = path.resolve(subprojectRootDir, '.firebaserc');
   const firebaseJSONSource = path.resolve(rootDir, 'firebase.json');
@@ -68,6 +74,7 @@ function createSubproject(rootDir, functionsDir, entryPoint) {
   saveJSON(firebaseJSONTarget, firebaseJSON);
 
   sh.cp(firebasercSource, firebasercTarget);
+  sh.exec(`echo "lib" > ${subprojectFunctionsDir}/.prettierignore`);
 
   return {
     rootDir: subprojectRootDir,
@@ -78,10 +85,16 @@ function createSubproject(rootDir, functionsDir, entryPoint) {
 }
 
 async function prunePackages(rootDir, packageJSON) {
-  const unused = await depcheck(rootDir);
+  const unused = await depcheck(rootDir, {});
 
   const prunedDependencies = Object.keys(packageJSON.dependencies)
-    .filter((name) => !unused.dependencies.includes(name)
+    .filter((name) => {
+      const isUnused = unused.dependencies.includes(name);
+      if (isUnused) {
+        console.log('  removing dependency:', name);
+      }
+      return !isUnused;
+    }
     ).reduce((dependencies, name) => {
       return {
         ...dependencies,
@@ -91,8 +104,8 @@ async function prunePackages(rootDir, packageJSON) {
 
   return {
     ...packageJSON,
-    dependencies: prunedDependencies,
-    devDependencies: {},
+    // dependencies: prunedDependencies,
+    // devDependencies: {},
   };
 }
 
@@ -104,7 +117,7 @@ function removeUnusedFiles(functionsDir) {
   output.modules.forEach((mod) => {
     const modPath = path.resolve(mod.source);
     if (mod.orphan && modPath !== indexPath) {
-      console.log('deleting', mod.source);
+      console.log('  deleting file:', mod.source);
       fs.removeSync(path.resolve(mod.source));
     }
   });
@@ -119,11 +132,9 @@ function isolateEntryPoint(functionsDir, entryPoint) {
     s.setIsExported(false);
   });
 
-  const entryPointStatement = project.getSourceFile(resolvedPath).getVariableStatement(entryPoint);
-
-  if (entryPointStatement) {
-    entryPointStatement.setIsExported(true);
-  }
+  project.getSourceFile(resolvedPath).getExportDeclarations().forEach(node => {
+    node.remove();
+  });
 
   project.getSourceFile(resolvedPath).getFunctions().forEach(fn => {
     if (fn.getName() !== entryPoint) {
@@ -131,9 +142,15 @@ function isolateEntryPoint(functionsDir, entryPoint) {
     }
   });
 
-  project.getSourceFile(resolvedPath).getExportDeclarations().forEach(node => {
-    node.remove();
-  });
+  const entryPointStatement = project.getSourceFile(resolvedPath).getVariableStatement(entryPoint);
+  if (entryPointStatement) {
+    entryPointStatement.setIsExported(true);
+  }
+
+  const entryPointFunctions = project.getSourceFile(resolvedPath).getFunction(entryPoint);
+  if (entryPointFunctions) {
+    entryPointFunctions.setIsExported(true);
+  }
 
   const i = 10;
   for (let index = 0; index < i; index++) {
@@ -162,17 +179,23 @@ function addBundler(packageJSON) {
   return packageJSON;
 }
 
-function deploySubproject(functionsDir, entryPoint) {
-  const { stdout, stderr, exitCode } = sh.exec(`cd ${functionsDir} && firebase deploy --only functions:${entryPoint}`);
-  console.log(stdout);
-  console.error(stderr);
+function deploySubproject(functionsDir, entryPoint, projectId) {
+  if (projectId) {
+    const { stdout, stderr, exitCode } = sh.exec(`cd ${functionsDir} && npm i && firebase use ${projectId} && firebase deploy --only functions:${entryPoint}`);
+    console.log(stdout);
+    console.error(stderr);
+  } else {
+    const { stdout, stderr, exitCode } = sh.exec(`cd ${functionsDir} && npm i && firebase deploy --only functions:${entryPoint}`);
+    console.log(stdout);
+    console.error(stderr);
+  }
   // if (exitCode !== 0) {
   //   throw new Error(`Exit ${exitCode}:`, stderr);
   // }
 }
 
-async function deployOptimized(rootDir, functionNames) {
-  console.log(`Deploying optimized project on path: "${rootDir}"`);
+async function deployOptimized(rootDir, functionNames, projectId) {
+  console.log(`Deploying optimized functions from project: "${rootDir}"`);
 
   console.log('Loading files...');
   const functionsDir = path.resolve(rootDir, 'functions');
@@ -187,10 +210,9 @@ async function deployOptimized(rootDir, functionNames) {
   sh.rm(path.resolve(functionsDir, 'package-updated.json'));
 
   console.log('Analyzing project...');
-  const triggers = (await getTriggers(path.resolve(functionsDir, packageJSON.main))).filter((t) => {
+  const triggers = (await getTriggers(functionsDir)).filter((t) => {
     return functionNames === undefined || functionNames.includes(t.entryPoint);
   });
-
 
   const subprojects = triggers.map((trigger) => {
     console.log('Creating separate project for each function...');
@@ -201,8 +223,8 @@ async function deployOptimized(rootDir, functionNames) {
     }
   });
 
-  const subprojectsDir = path.resolve(rootDir, 'foundry-subprojects');
-  const movedSubprojectsDir = path.resolve(functionsDir, 'foundry-subprojects');
+  const subprojectsDir = path.resolve(rootDir, '.foundry');
+  const movedSubprojectsDir = path.resolve(functionsDir, '.foundry');
 
   sh.rm('-fR', movedSubprojectsDir);
   sh.mv('-f', subprojectsDir, movedSubprojectsDir);
@@ -212,7 +234,7 @@ async function deployOptimized(rootDir, functionNames) {
     isolateEntryPoint(subproject.movedFunctionsDir, subproject.entryPoint);
 
     console.log('Removing unused ts files...');
-    removeUnusedFiles(subproject.movedFunctionsDir);
+    // removeUnusedFiles(subproject.movedFunctionsDir);
 
     console.log('Pruning package...');
     const prunedPackage = await prunePackages(subproject.movedFunctionsDir, packageJSON);
@@ -224,12 +246,12 @@ async function deployOptimized(rootDir, functionNames) {
     saveJSON(path.resolve(subproject.movedFunctionsDir, 'package.json'), bundlerPackage);
 
     console.log('Deploying function...');
-    deploySubproject(subproject.movedFunctionsDir, subproject.entryPoint);
+    deploySubproject(subproject.movedFunctionsDir, subproject.entryPoint, projectId);
   });
 
   await Promise.all(promises);
 
-  sh.rm('-fR', movedSubprojectsDir);
+  // sh.rm('-fR', movedSubprojectsDir);
 }
 
 
