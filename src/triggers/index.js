@@ -9,6 +9,7 @@ const TRIGGER_PARSER = path.resolve(__dirname, './triggerParser');
 
 async function getFirebaseConfig(sourceDir) {
   const { stdout, stderr, exitCode } = sh.exec(`cd ${sourceDir} && firebase functions:config:get`);
+  console.error(stderr);
   try {
     const config = JSON.parse(stdout);
     return config;
