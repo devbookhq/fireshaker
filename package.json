@@ -1,10 +1,10 @@
 {
-  "name": "foundrycf",
+  "name": "@foundryapp/foundry",
   "version": "1.0.0",
-  "description": "",
+  "description": "Foundry makes your Firebase Functions start & run faster",
   "main": "index.js",
   "bin": {
-    "foundrycf": "./index.js"
+    "foundry": "./index.js"
   },
   "scripts": {
     "start": "node src/index.js"
