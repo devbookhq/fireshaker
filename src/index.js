@@ -1,6 +1,5 @@
 const { deployOptimized } = require('./deploy');
 
-
 async function main() {
   const sourceDir = process.argv[2];
   const functionNames = process.argv[3];
