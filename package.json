@@ -1,9 +1,11 @@
 {
-  "name": "fireshaker",
+  "name": "foundrycf",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/index.js",
-  "bin": "dist/index.js",
+  "main": "index.js",
+  "bin": {
+    "foundrycf": "./index.js"
+  },
   "scripts": {
     "start": "node src/index.js"
   },

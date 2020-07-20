@@ -1,7 +1,9 @@
+#!/usr/bin/env node
+
 const { program } = require('commander');
 
-const { deployOptimized } = require('./deploy');
-const { firebase } = require('./firebase');
+const { deployOptimized } = require('./lib/deploy');
+const { firebase } = require('./lib/firebase');
 
 program.parse(process.argv);
 
