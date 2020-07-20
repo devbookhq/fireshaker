@@ -8,7 +8,7 @@
   },
   "scripts": {
     "start:deploy": "node src/deploy.js",
-    "start": "node src/index.js",
+    "start": "node index.js",
     "publish": "npm publish --access=production"
   },
   "author": "",
@@ -20,8 +20,7 @@
     "firebase": "^7.16.1",
     "fs-extra": "^9.0.1",
     "shelljs": "^0.8.4",
-    "ts-morph": "^7.1.2",
-    "typescript": "^3.9.7"
+    "ts-morph": "^7.1.2"
   },
   "devDependencies": {}
 }
