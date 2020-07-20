@@ -11,7 +11,7 @@ program
     if (functionNames) {
       const parsedFunctionNames = functionNames.split(',');
 
-      // deployObj =  {
+      // deployObj = {
       //   funcName: string;
       //   funcUrl: string;
       //   deployTimestamp: number;
