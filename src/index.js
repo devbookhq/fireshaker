@@ -1,18 +1,27 @@
+const { program } = require('commander');
+
 const { deployOptimized } = require('./deploy');
+const { firebase } = require('./firebase');
 
-async function main() {
-  const sourceDir = process.argv[2];
-  const functionNames = process.argv[3];
-  const projectId = process.argv[4];
+program.parse(process.argv);
 
-  if (functionNames) {
-    const parsedFunctionNames = functionNames.split(',');
-    await deployOptimized(sourceDir, parsedFunctionNames, projectId);
-  } else {
-    await deployOptimized(sourceDir, projectId);
-  }
-}
+program
+  .command('deploy <firebaseDir> [functionNames]')
+  .action(async (sourceDir, functionNames) => {
+    if (functionNames) {
+      const parsedFunctionNames = functionNames.split(',');
 
-if (require.main === module) {
-  main();
-}
+      // deployObj =  {
+      //   funcName: string;
+      //   funcUrl: string;
+      //   deployTimestamp: number;
+      //   commit: string;
+      //   projectId: string;
+      // }
+      const deployObj = await deployOptimized(sourceDir, parsedFunctionNames);
+      await firebase.saveDeploy(deployObj);
+    } else {
+      await deployOptimized(sourceDir);
+    }
+  });
+
