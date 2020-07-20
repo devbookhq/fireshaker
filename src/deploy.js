@@ -7,7 +7,6 @@ const depcheck = require('depcheck');
 
 const { getTriggers } = require('./triggers');
 const { loadJSON, saveJSON } = require('./utility');
-const { Console } = require('console');
 
 
 function installModules(functionsDir) {
@@ -45,24 +44,6 @@ function createSubproject(rootDir, functionsDir, entryPoint) {
   const movedSubprojectFunctionsDir = path.resolve(movedSubprojectRootDir, 'functions');
 
   sh.mkdir('-p', subprojectFunctionsDir);
-  // fs.copySync(functionsDir, subprojectFunctionsDir, {
-  //   preserveTimestamps: true,
-  //   overwrite: true,
-  //   recursive: true,
-  //   filter: (src, dest) => {
-  //     // if (src.startsWith(subprojectRootDir)) {
-  //     //   return false;
-  //     // }
-  //     if (src.startsWith(path.resolve(functionsDir, 'node_modules'))) {
-  //       return false;
-  //     }
-  //     return true;
-  //   },
-  // });
-
-  // console.log('functionsDir', functionsDir);
-  // console.log('subprojectFunctionsDir', subprojectFunctionsDir);
-
   sh.exec(`rsync -a --exclude 'node_modules' ${functionsDir}/ ${subprojectFunctionsDir}/`);
 
   const firebasercSource = path.resolve(rootDir, '.firebaserc');
@@ -247,11 +228,20 @@ async function deployOptimized(rootDir, functionNames, projectId) {
 
     console.log('Deploying function...');
     deploySubproject(subproject.movedFunctionsDir, subproject.entryPoint, projectId);
+
+    return {
+      docId: '',
+      commit: '',
+      projectId,
+      deployTimestamp: '',
+      funcUrl: '',
+      funcName: '',
+    };
   });
 
-  await Promise.all(promises);
-
-  // sh.rm('-fR', movedSubprojectsDir);
+  sh.rm('-fR', movedSubprojectsDir);
+  const deploys = await Promise.all(promises);
+  return deploys;
 }
 
 

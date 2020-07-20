@@ -1,5 +1,5 @@
 const sh = require('shelljs');
-const { loadJSON } = require('./utility');
+const { loadJSON, flattenObject } = require('./utility');
 
 
 async function setFirebaseConfig(sourceDir, config) {
@@ -8,27 +8,9 @@ async function setFirebaseConfig(sourceDir, config) {
     return !/[A-Z]/.test(key);
   }).map((key) => `"${key}"="${flatEnvVarsObj[key]}"`);
   const { stdout, stderr, exitCode } = sh.exec(`cd ${sourceDir} && firebase functions:config:set ${statements.join(' ')}`);
-  // console.log(stdout);
+  console.log(stdout);
   console.error(stderr);
 }
-
-function flattenObject(ob) {
-  var toReturn = {};
-  for (var i in ob) {
-    if (!ob.hasOwnProperty(i)) continue;
-    if ((typeof ob[i]) == 'object' && ob[i] !== null) {
-      var flatObject = flattenObject(ob[i]);
-      for (var x in flatObject) {
-        if (!flatObject.hasOwnProperty(x)) continue;
-        toReturn[i + '.' + x] = flatObject[x];
-      }
-    } else {
-      toReturn[i] = ob[i];
-    }
-  }
-  return toReturn;
-}
-
 
 async function main() {
   const sourceDir = process.argv[2];
