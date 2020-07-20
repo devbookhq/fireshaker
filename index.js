@@ -7,11 +7,11 @@ const { firebase } = require('./lib/firebase');
 
 
 program
-  .command('deploy [functionNames...]')
-  .action(async (functionNames) => {
-    console.log('fn', functionNames);
+  .command('deploy [functions...]')
+  .action(async (functions) => {
+    console.log('fn', functions);
     const sourceDir = __dirname;
-    const deployObj = await deploy(sourceDir, functionNames)
+    const deployObj = await deploy(sourceDir, functions)
     // deployObj =  {
     //   funcName: string;
     //   funcUrl: string;
