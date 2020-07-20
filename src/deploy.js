@@ -141,11 +141,11 @@ function isolateEntryPoint(functionsDir, entryPoint) {
 }
 
 function addBundler(packageJSON) {
-  // package.scripts.build = '"build": "tsc && npx parcel build ./lib/index.js --no-source-maps && find ./lib -type f -exec rm -f {} + && mv -v ./dist/* ./lib/"';
-  // package = {
-  //   ...package,
+  // packageJSON.scripts.build = '"build": "tsc && npx parcel build ./lib/index.js --no-source-maps && find ./lib -type f -exec rm -f {} + && mv -v ./dist/* ./lib/"';
+  // packageJSON = {
+  //   ...packageJSON,
   //   targets: {
-  //     ...package.targets,
+  //     ...packageJSON.targets,
   //     node: {
   //       context: "node",
   //       includeNodeModules: false,
@@ -230,7 +230,6 @@ async function deployOptimized(rootDir, functionNames, projectId) {
     deploySubproject(subproject.movedFunctionsDir, subproject.entryPoint, projectId);
 
     return {
-      docId: '',
       commit: '',
       projectId,
       deployTimestamp: '',
@@ -240,7 +239,9 @@ async function deployOptimized(rootDir, functionNames, projectId) {
   });
 
   sh.rm('-fR', movedSubprojectsDir);
+
   const deploys = await Promise.all(promises);
+
   return deploys;
 }
 
