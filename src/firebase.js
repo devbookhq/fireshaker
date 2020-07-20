@@ -29,4 +29,5 @@ class Firebase {
 }
 
 const firebase = new Firebase();
-export firebase;
+
+exports.firebase = firebase;

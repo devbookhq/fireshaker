@@ -94,6 +94,7 @@ function removeUnusedFiles(functionsDir) {
   const indexPath = path.resolve(functionsDir, 'src', 'index.ts');
   const output = depcruise([path.resolve(functionsDir, 'src')], {
     exclude: "(node_modules)",
+    tsPreCompilationDeps: true,
   }).output;
   output.modules.forEach((mod) => {
     const modPath = path.resolve(mod.source);
@@ -162,7 +163,7 @@ function addBundler(packageJSON) {
 
 function deploySubproject(functionsDir, entryPoint, projectId) {
   if (projectId) {
-    const { stdout, stderr, exitCode } = sh.exec(`cd ${functionsDir} && npm i && firebase use ${projectId} && firebase deploy --only functions:${entryPoint}`);
+    const { stdout, stderr, exitCode } = sh.exec(`cd ${functionsDir} && npm i && firebase deploy --only functions:${entryPoint}`);
     console.log(stdout);
     console.error(stderr);
   } else {
@@ -195,6 +196,8 @@ async function deployOptimized(rootDir, functionNames, projectId) {
     return functionNames === undefined || functionNames.includes(t.entryPoint);
   });
 
+  // console.log(triggers);
+  // return;
   const subprojects = triggers.map((trigger) => {
     console.log('Creating separate project for each function...');
     const subproject = createSubproject(rootDir, functionsDir, trigger.entryPoint);
@@ -215,7 +218,7 @@ async function deployOptimized(rootDir, functionNames, projectId) {
     isolateEntryPoint(subproject.movedFunctionsDir, subproject.entryPoint);
 
     console.log('Removing unused ts files...');
-    // removeUnusedFiles(subproject.movedFunctionsDir);
+    removeUnusedFiles(subproject.movedFunctionsDir);
 
     console.log('Pruning package...');
     const prunedPackage = await prunePackages(subproject.movedFunctionsDir, packageJSON);
@@ -252,9 +255,9 @@ async function main() {
 
   if (functionNames) {
     const parsedFunctionNames = functionNames.split(',');
-    await deployOptimized(sourceDir, parsedFunctionNames, projectId);
+    await deployOptimized(sourceDir, parsedFunctionNames);
   } else {
-    await deployOptimized(sourceDir, projectId);
+    await deployOptimized(sourceDir);
   }
 }
 
