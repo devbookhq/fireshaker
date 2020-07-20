@@ -1,14 +1,15 @@
 {
-  "name": "fireshaker",
-  "version": "1.0.0",
-  "description": "",
-  "main": "dist/index.js",
-  "bin": "dist/index.js",
+  "name": "@foundryapp/foundry-cli",
+  "version": "1.0.1",
+  "description": "Foundry makes your Firebase Functions start & run faster",
+  "main": "index.js",
+  "bin": {
+    "foundry": "./index.js"
+  },
   "scripts": {
     "run:deploy": "node src/deploy",
     "start": "node src/index.js",
-    "build:prod": "ncc build src/deploy.js && pkg dist/index.js --target node10-macos-x64 --output foundrycf",
-    "build": "pkg src/deploy.js --target node10-macos-x64 --output foundrycf-dev"
+    "publish": "npm publish --access=production"
   },
   "author": "",
   "license": "ISC",
@@ -22,7 +23,5 @@
     "ts-morph": "^7.1.2",
     "typescript": "^3.9.7"
   },
-  "devDependencies": {
-    "pkg": "^4.4.9"
-  }
+  "devDependencies": {}
 }
