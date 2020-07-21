@@ -9,7 +9,6 @@ const { firebase } = require('./lib/firebase');
 program
   .command('deploy [functions...]')
   .action(async (functions) => {
-    console.log('fn', functions);
     const sourceDir = process.cwd();
     const deployObj = await deploy(sourceDir, functions)
     await firebase.saveDeploy(deployObj);
