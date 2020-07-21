@@ -5,6 +5,7 @@ const { program } = require('commander');
 const { deploy } = require('./lib/deploy');
 const { firebase } = require('./lib/firebase');
 
+
 const packageJSON = require('./package.json');
 
 program.version(packageJSON.version, '-v, --version');
