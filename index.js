@@ -13,8 +13,8 @@ program
     const sourceDir = __dirname;
     const deployObj = await deploy(sourceDir, functions)
     // deployObj = {
-    //   funcName: string;
-    //   funcUrl?: string;
+    //   functionName: string;
+    //   functionUrl?: string;
     //   deployTimestamp: number;
     //   commit?: string;
     //   projectId: string;
