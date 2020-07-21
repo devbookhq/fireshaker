@@ -1,6 +1,7 @@
 const depcruise = require('dependency-cruiser').cruise;
 const path = require('path');
 const sh = require('shelljs');
+const { createDecipher } = require('crypto');
 
 function removeUnusedFiles(functionsDir) {
   const { stdout } = sh.exec(`find '${functionsDir}/src//.' ! -name . -print | grep -c //`, { silent: true })
@@ -45,8 +46,13 @@ function removeUnusedFiles(functionsDir) {
   console.log('Cruised files:', output.modules.length, '/', stdout);
 }
 
+function createDir(sourceDir) {
+  sh.mv(sourceDir, path.resolve(sourceDir, 'll'));
+}
+
 async function main(sourceDir) {
-  removeUnusedFiles(sourceDir);
+  createDir(sourceDir);
+  // removeUnusedFiles(sourceDir);
 }
 
 if (require.main === module) {
