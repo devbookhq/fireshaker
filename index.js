@@ -10,15 +10,8 @@ program
   .command('deploy [functions...]')
   .action(async (functions) => {
     console.log('fn', functions);
-    const sourceDir = __dirname;
+    const sourceDir = process.cwd();
     const deployObj = await deploy(sourceDir, functions)
-    // deployObj =  {
-    //   funcName: string;
-    //   funcUrl: string;
-    //   deployTimestamp: number;
-    //   commit: string;
-    //   projectId: string;
-    // }
     await firebase.saveDeploy(deployObj);
   });
 
