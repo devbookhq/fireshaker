@@ -7,7 +7,7 @@ const { firebase } = require('./lib/firebase');
 
 const packageJSON = require('./package.json');
 
-program.version(packageJSON.version);
+program.version(packageJSON.version, '-v, --version');
 
 program
   .command('deploy [functions...]')
