@@ -13,8 +13,8 @@ program
   .command('deploy [functions...]')
   .action(async (functions) => {
     const sourceDir = process.cwd();
-    const deployObj = await deploy(sourceDir, functions)
-    await firebase.saveDeploy(deployObj);
+    const deployObjs = await deploy(sourceDir, functions)
+    await firebase.saveDeploy(deployObjs);
   });
 
 program.parse(process.argv);
