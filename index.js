@@ -12,11 +12,11 @@ program
     console.log('fn', functions);
     const sourceDir = __dirname;
     const deployObj = await deploy(sourceDir, functions)
-    // deployObj =  {
+    // deployObj = {
     //   funcName: string;
-    //   funcUrl: string;
+    //   funcUrl?: string;
     //   deployTimestamp: number;
-    //   commit: string;
+    //   commit?: string;
     //   projectId: string;
     // }
     await firebase.saveDeploy(deployObj);
