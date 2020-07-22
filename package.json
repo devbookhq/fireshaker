@@ -1,6 +1,6 @@
 {
   "name": "@foundryapp/foundry-cli",
-  "version": "1.0.12",
+  "version": "1.0.14",
   "description": "Foundry makes your Firebase Functions start & run faster",
   "main": "index.js",
   "bin": {
@@ -9,7 +9,7 @@
   "scripts": {
     "start:deploy": "node lib/deploy.js",
     "start": "node index.js",
-    "publish:npm": "npm publish --access=production"
+    "deploy:prod": "npm publish --access=production && node bumpVersion.js"
   },
   "author": "",
   "license": "ISC",
