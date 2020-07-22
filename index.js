@@ -5,7 +5,7 @@ const path = require('path');
 const fs = require('fs-extra');
 
 const { deploy } = require('./lib/deploy');
-const { firebase } = require('./lib/firebase');
+const { saveDeploy } = require('./lib/firebase');
 const packageJSON = require('./package.json');
 const { write } = require('fs');
 
@@ -26,7 +26,7 @@ program
     // }
 
     const deployObjs = await deploy(sourceDir, functions, cmdObj.debug)
-    await firebase.saveDeploy(deployObjs);
+    await saveDeploy(deployObjs);
   });
 
 program.parse(process.argv);
