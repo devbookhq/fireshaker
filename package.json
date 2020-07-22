@@ -19,7 +19,6 @@
     "depcheck": "^1.0.0",
     "dependency-cruiser": "^9.9.2",
     "fs-extra": "^9.0.1",
-    "ncc": "^0.3.6",
     "shelljs": "^0.8.4",
     "ts-morph": "^7.1.2"
   }

@@ -1,13 +1,10 @@
 #!/usr/bin/env node
 
 const { program } = require('commander');
-const path = require('path');
-const fs = require('fs-extra');
 
 const { deploy } = require('./lib/deploy');
 const { saveDeploy } = require('./lib/firebase');
 const packageJSON = require('./package.json');
-const { write } = require('fs');
 
 
 
