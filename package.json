@@ -9,7 +9,7 @@
   "scripts": {
     "start": "node index.js",
     "prepublishOnly": "npm version patch --force",
-    "deploy:npm": "npm publish --access=production"
+    "deploy:prod": "npm publish --access=production"
   },
   "author": "",
   "license": "ISC",
