@@ -9,10 +9,10 @@ program.version(packageJSON.version, '-v, --version');
 
 program
   .command('deploy [functions...]')
-  .action(async (functions) => {
+  .option('-d, --debug')
+  .action(async (functions, cmdObj) => {
     const sourceDir = process.cwd();
-    const deployObjs = await deploy(sourceDir, functions)
-    console.debug('deployObjs', deployObjs);
+    const deployObjs = await deploy(sourceDir, functions, cmdObj.debug)
     await firebase.saveDeploy(deployObjs);
   });
 
