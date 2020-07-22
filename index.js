@@ -15,6 +15,7 @@ program.version(packageJSON.version, '-v, --version');
 program
   .command('deploy [functions...]')
   .option('--debug <file>')
+  .option('--dev')
   .action(async (functions, cmdObj) => {
     const sourceDir = process.cwd();
 
@@ -24,8 +25,8 @@ program
     //   process.stdout.pipe(access);
     // }
 
-    const deployObjs = await deploy(sourceDir, functions, cmdObj.debug)
-    await saveDeploy(deployObjs);
+    const deployObjs = await deploy(sourceDir, functions, cmdObj.debug);
+    await saveDeploy(deployObjs, cmdObj.dev);
   });
 
 program.parse(process.argv);
