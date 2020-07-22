@@ -1,6 +1,6 @@
 {
   "name": "@foundryapp/foundry-cli",
-  "version": "1.0.30",
+  "version": "1.0.31",
   "description": "Foundry makes your Firebase Functions start & run faster",
   "main": "index.js",
   "bin": {
