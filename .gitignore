@@ -1,16 +1,4 @@
 node_modules
 fireshaker-*linux
-fireshaker-*macos
-fireshaker-*win.exe
-firestarter-*linux
-firestarter-*macos
-firestarter-*win.exe
-index-*linux
-index-*macos
-index-*win.exe
-cloud-funcs-example
-todesktop-web-app-master
-foundry
-foundry-dev
-dist/
+node_modules
 /repl.js

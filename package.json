@@ -11,7 +11,7 @@
     "prepublishOnly": "npm version patch --force",
     "deploy:prod": "npm publish --access=production"
   },
-  "author": "",
+  "author": "FoundryLabs",
   "license": "ISC",
   "dependencies": {
     "commander": "^5.1.0",
@@ -21,6 +21,5 @@
     "fs-extra": "^9.0.1",
     "shelljs": "^0.8.4",
     "ts-morph": "^7.1.2"
-  },
-  "devDependencies": {}
+  }
 }
