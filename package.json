@@ -7,7 +7,6 @@
     "foundry": "./index.js"
   },
   "scripts": {
-    "start:deploy": "node lib/deploy.js",
     "start": "node index.js",
     "prepublishOnly": "npm version patch --force",
     "deploy:npm": "npm publish --access=production"
