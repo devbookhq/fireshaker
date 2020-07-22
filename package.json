@@ -9,7 +9,7 @@
   "scripts": {
     "start:deploy": "node lib/deploy.js",
     "start": "node index.js",
-    "deploy:prod": "npm publish --access=production"
+    "publish:npm": "npm publish --access=production"
   },
   "author": "",
   "license": "ISC",
