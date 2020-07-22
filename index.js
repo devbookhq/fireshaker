@@ -12,6 +12,7 @@ program
   .action(async (functions) => {
     const sourceDir = process.cwd();
     const deployObjs = await deploy(sourceDir, functions)
+    console.debug('deployObjs', deployObjs);
     await firebase.saveDeploy(deployObjs);
   });
 
