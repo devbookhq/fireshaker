@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+require('v8-compile-cache');
+
 const { program } = require('commander');
 
 const { deploy } = require('./lib/deploy');
