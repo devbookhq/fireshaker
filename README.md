@@ -19,3 +19,6 @@ Navigate to the root of your project (where is your firebase.json file) and depl
 
 ## Optimization
 
+TS
+
+WHAT ARE the stages
