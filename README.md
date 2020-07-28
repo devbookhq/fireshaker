@@ -16,3 +16,6 @@ Navigate to the root of your project (where is your firebase.json file) and depl
 
 ### Deploy all functions
 `foundry deploy`
+
+## Optimization
+

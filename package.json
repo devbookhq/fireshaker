@@ -19,9 +19,10 @@
     "depcheck": "^1.0.0",
     "dependency-cruiser": "^9.9.2",
     "fs-extra": "^9.0.1",
-    "ncc": "^0.3.6",
+    "jsize": "^6.0.1",
+    "libnpm": "^3.0.1",
+    "package-size": "^2.3.0",
     "shelljs": "^0.8.4",
-    "ts-morph": "^7.1.2",
-    "v8-compile-cache": "^2.1.1"
+    "ts-morph": "^7.1.2"
   }
 }
