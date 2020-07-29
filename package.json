@@ -12,7 +12,7 @@
     "deploy:prod": "npm publish --access=production"
   },
   "author": "FoundryLabs",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "axios": "^0.19.2",
     "commander": "^5.1.0",
