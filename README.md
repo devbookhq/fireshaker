@@ -3,9 +3,9 @@
 Fireshaker is a CLI tool that automatically optimizes & deploys your Firebase Functions.
 
 Usually, the more Firebase Functions you have in one project the more dependencies you add. Even the Functions that are not using these dependencies have them installed in their node_modules.
-This slows both cold and warm starts.
+This slows both cold and warm starts of your functions.
 
-Almost always more than half on the modules can be removed and the Function's start can be proportionally faster.
+Almost always more than half of the modules can be removed. Thus the functions can start proportionally faster.
 
 For example - in the first project that we helped to optimize we reduced the size of the node_modules by 53% on average.
 
