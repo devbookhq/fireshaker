@@ -9,7 +9,7 @@ Data:
 ## Supported languages
 - TypeScript
 
-## How does Fireshaker works?
+## How does Fireshaker work?
 When you deploy Firebase Functions the whole functions folder gets uploaded and all the dependencies in the `package.json` are installed even when they are not used in the function that you have deployed.
 
 We solve that by isolating Firebase Functions that are **statically exported from the index.ts** then prunning their source code and dependencies.
@@ -26,7 +26,7 @@ The whole process looks like this:
 9. Deploy the Firebase Function to the current project
 
 ## Are Google Cloud Functions supported?
-Fireshaker currently supports only Firebase Functions. General Google Cloud Functions aren't right now supported but it's on the roadmap.
+Fireshaker currently supports only Firebase Functions. General Google Cloud Functions aren't supported right now but it's on the roadmap.
 
 ## Installation
 This will install Fireshaker as a CLI. Requires at least Node.js 10.
