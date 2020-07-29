@@ -1,10 +1,10 @@
 {
-  "name": "@foundryapp/foundry-cli",
+  "name": "@foundryapp/fireshaker",
   "version": "1.0.31",
   "description": "CLI tool that optimizes & deploys your Firebase Functions so they run faster and have shorter cold starts",
   "main": "lib/deploy.js",
   "bin": {
-    "foundry": "./index.js"
+    "fireshaker": "./index.js"
   },
   "scripts": {
     "start": "node index.js",
