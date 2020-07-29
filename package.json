@@ -1,5 +1,5 @@
 {
-  "name": "@foundryapp/fireshaker",
+  "name": "fireshaker",
   "version": "1.0.31",
   "description": "CLI tool that optimizes & deploys your Firebase Functions so they run faster and have shorter cold starts",
   "main": "lib/deploy.js",
@@ -19,7 +19,6 @@
     "depcheck": "^1.0.0",
     "dependency-cruiser": "^9.9.2",
     "fs-extra": "^9.0.1",
-    "howfat": "^0.2.6",
     "shelljs": "^0.8.4",
     "ts-morph": "^7.1.2"
   }
