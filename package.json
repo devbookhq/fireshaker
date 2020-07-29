@@ -1,0 +1,25 @@
+{
+  "name": "fireshaker",
+  "version": "1.0.32",
+  "description": "CLI tool that optimizes & deploys your Firebase Functions so they run faster and have shorter cold starts",
+  "main": "lib/deploy.js",
+  "bin": {
+    "fireshaker": "./index.js"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "prepublishOnly": "npm version patch --force",
+    "deploy:prod": "npm publish --access=production"
+  },
+  "author": "FoundryLabs",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "commander": "^5.1.0",
+    "depcheck": "^1.0.0",
+    "dependency-cruiser": "^9.9.2",
+    "fs-extra": "^9.0.1",
+    "shelljs": "^0.8.4",
+    "ts-morph": "^7.1.2"
+  }
+}

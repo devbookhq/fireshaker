@@ -1,9 +1,5 @@
 node_modules
 fireshaker-*linux
-fireshaker-*macos
-fireshaker-*win.exe
-firestarter-*linux
-firestarter-*macos
-firestarter-*win.exe
-cloud-funcs-example
-todesktop-web-app-master
+node_modules
+/dist
+/repl.js
