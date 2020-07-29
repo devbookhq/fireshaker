@@ -34,7 +34,7 @@ Fireshaker currently supports only Firebase Functions. General Google Cloud Func
 ## Installation
 This will install Fireshaker as a CLI. Requires at least Node.js 10.
 
-    npm i -g @foundryapp/fireshaker
+    npm i -g fireshaker
 
 ## Usage
 
