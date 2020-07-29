@@ -2,3 +2,4 @@ node_modules
 fireshaker-*linux
 node_modules
 /dist
+/repl.js
