@@ -40,7 +40,7 @@ This will install Fireshaker as a CLI. Requires at least Node.js 10.
 
 Navigate to the root of your project (where is your `firebase.json` file) and deploy your functions the same way as you would with the Firebase CLI. Fireshaker respects your Firebase configuration.
 
-Your Firebase functions need to be statically exported from your root `index.ts` file.
+Your Firebase functions need to be statically exported from your root `index.ts` file.Otestovane 
 
 ### Deploy only specific functions
 
