@@ -7,8 +7,6 @@ This slows both cold and warm starts of your functions.
 
 Almost always more than half of the modules can be removed. Thus the functions can start proportionally faster.
 
-For example - in the first project that we helped to optimize we reduced the size of the node_modules by 53% on average.
-
 ## Supported languages
 - TypeScript
 
